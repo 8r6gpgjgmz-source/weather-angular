@@ -1,7 +1,7 @@
-<div id="app">
-  <h1 id="city-name">{{ cityName() }}</h1>
-  <p id="datetime">{{ dateTime() }}</p>
-  <p id="weather-icon">{{ weatherIcon() }}</p>
-  <p id="temperature">{{ temperature() }}°C</p>
-  <p id="description">{{ description() }}</p>
-</div>
+<app-weather-card
+  [cityName]="cityName()"
+  [temperature]="temperature()"
+  [description]="description()"
+  [weatherIcon]="weatherIcon()"
+  [dateTime]="dateTime()"
+/>

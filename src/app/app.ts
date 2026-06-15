@@ -1,8 +1,10 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { Weather } from './weather';
+import { WeatherCard } from './weather-card/weather-card';
 
 @Component({
   selector: 'app-root',
+  imports: [WeatherCard],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -61,39 +63,36 @@ export class App implements OnInit {
   }
   
   fetchWeather(lat: number, lon: number): void {
-	  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weathercode&timezone=auto`;
-	  this.weatherService.getWeather(lat, lon).subscribe(data => {
-		  const times = data.hourly.time;
-		  const temperatures = data.hourly.temperature_2m;
-		  const weatherCodes = data.hourly.weathercode;
-		  
-		  const now = new Date();
-		  now.setMinutes(0, 0, 0);
-		  const currentTimeString = now.toISOString().slice(0,16);
-		  
-		  const index = times.indexOf(currentTimeString);
-		  if (index !== -1) {
-			  this.temperature.set(temperatures[index]);
-			  const currentCode = weatherCodes[index];
-			  this.description.set(this.weatherDescriptions[currentCode]
-				?? 'Brak danych');
-				this.weatherIcon.set(this.weatherIcons[currentCode] ?? '🌡️');
-
-				const now2 = new Date();
-				const options: Intl.DateTimeFormatOptions = {
-					weekday: 'long', year: 'numeric', month: 'long',
-					day: 'numeric', hour: '2-digit', minute: '2-digit'
-				  };
-
-				  this.dateTime.set(now2.toLocaleDateString('pl-PL', options));
-		  }
-		const geoUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
-		this.weatherService.getCity(lat, lon).subscribe(data => {
-			this.cityName.set(
-				data.address.city || data.address.town || data.address.village || data.address.municipality
-			);
-		})
-	  });
+	this.weatherService.getWeather(lat, lon).subscribe(data => {
+	  const times = data.hourly.time;
+	  const temperatures = data.hourly.temperature_2m;
+	  const weatherCodes = data.hourly.weathercode;
+  
+	  const now = new Date();
+	  now.setMinutes(0, 0, 0);
+	  const currentTimeString = now.toISOString().slice(0, 16);
+  
+	  const index = times.indexOf(currentTimeString);
+	  if (index !== -1) {
+		this.temperature.set(temperatures[index]);
+		const currentCode = weatherCodes[index];
+		this.description.set(this.weatherDescriptions[currentCode] ?? 'Brak danych');
+		this.weatherIcon.set(this.weatherIcons[currentCode] ?? '🌡️');
+  
+		const now2 = new Date();
+		const options: Intl.DateTimeFormatOptions = {
+		  weekday: 'long', year: 'numeric', month: 'long',
+		  day: 'numeric', hour: '2-digit', minute: '2-digit'
+		};
+		this.dateTime.set(now2.toLocaleDateString('pl-PL', options));
+	  }
+	});
+  
+	this.weatherService.getCity(lat, lon).subscribe(data => {
+	  this.cityName.set(
+		data.address.city || data.address.town || data.address.village || data.address.municipality
+	  );
+	});
   }
 	  
 }

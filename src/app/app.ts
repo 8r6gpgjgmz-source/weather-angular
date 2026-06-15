@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import { Weather } from './weather';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,7 @@ import { HttpClient} from '@angular/common/http';
   styleUrl: './app.css'
 })
 export class App implements OnInit {
-	private http = inject(HttpClient);		
+	private weatherService = inject(Weather);		
 	
   cityName = signal('Ładowanie...');
   temperature = signal(0);
@@ -62,7 +62,7 @@ export class App implements OnInit {
   
   fetchWeather(lat: number, lon: number): void {
 	  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weathercode&timezone=auto`;
-	  this.http.get<any>(url).subscribe(data => {
+	  this.weatherService.getWeather(lat, lon).subscribe(data => {
 		  const times = data.hourly.time;
 		  const temperatures = data.hourly.temperature_2m;
 		  const weatherCodes = data.hourly.weathercode;
@@ -88,7 +88,7 @@ export class App implements OnInit {
 				  this.dateTime.set(now2.toLocaleDateString('pl-PL', options));
 		  }
 		const geoUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
-		this.http.get<any>(geoUrl).subscribe(data => {
+		this.weatherService.getCity(lat, lon).subscribe(data => {
 			this.cityName.set(
 				data.address.city || data.address.town || data.address.village || data.address.municipality
 			);

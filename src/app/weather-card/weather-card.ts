@@ -1,8 +1,9 @@
 import { Component, input } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-weather-card',
-  imports: [],
+  imports: [MatCardModule],
   templateUrl: './weather-card.html',
   styleUrl: './weather-card.css',
 })
@@ -12,4 +13,5 @@ export class WeatherCard {
   description = input<string>('');
   weatherIcon = input<string>('');
   dateTime = input<string>('');
+  forecast = input<{ time: string; icon: string; temp: number }[]>([]);
 }

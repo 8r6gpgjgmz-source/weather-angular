@@ -20,7 +20,7 @@ export class WeatherBackground implements OnInit, OnDestroy {
   constructor() {
     effect(() => {
       const code = this.weatherCode();
-      const dark = this.darkMode();
+      this.darkMode();
       if (this.scene) this.buildScene(code);
     });
   }
@@ -29,6 +29,12 @@ export class WeatherBackground implements OnInit, OnDestroy {
     const canvas = this.canvasRef.nativeElement;
     this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.domElement.style.position = 'fixed';
+    this.renderer.domElement.style.top = '0';
+    this.renderer.domElement.style.left = '0';
+    this.renderer.domElement.style.width = '100%';
+    this.renderer.domElement.style.height = '100%';
+    this.renderer.domElement.style.zIndex = '-1';
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.camera.position.z = 10;

@@ -32,9 +32,7 @@ export class Favorites {
   }
 
   pickResult(city: { name: string; lat: number; lon: number }): void {
-    const parts = city.name.split(',');
-    const shortName = parts.length >= 2 ? `${parts[0]}, 
-    ${parts[1].trim()}` : parts[0];
+    const shortName = city.name.split(',')[0].trim();
     const cityWithShortName = { ...city, name: shortName };
     const updated = [...this.favorites(), cityWithShortName];
     this.favorites.set(updated);

@@ -1,6 +1,6 @@
 mat-card {
   max-width: 400px;
-  margin: 100px auto;
+  margin: 0 auto;
   text-align: center;
   padding: 32px;
   background: rgba(255, 255, 255, 0.1) !important;
@@ -11,12 +11,6 @@ mat-card {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   color: #ffffff !important;
 }
-  
-  .icon {
-    font-size: 64px;
-    margin: 24px 0 16px 0;
-    line-height: 1;
-  }
   
   .temperature {
     font-size: 48px;
@@ -106,4 +100,11 @@ mat-card {
   mat-card-header {
     display: block !important;
     text-align: center !important;
+  }
+
+  @media (max-width: 768px) {
+    mat-card {
+      margin: 0 auto;
+      max-width: 95vw;
+    }
   }

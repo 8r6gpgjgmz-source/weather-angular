@@ -1,9 +1,8 @@
 import { Component, input, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-air-quality',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './air-quality.html',
   styleUrl: './air-quality.css',
 })

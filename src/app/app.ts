@@ -65,7 +65,11 @@ export class App implements OnInit {
   }
 
   onSelectCity(city: { lat: number; lon: number; name: string }): void {
-    this.cityName.set(city.name);
+    this.weatherService.getCity(city.lat, city.lon).subscribe(data => {
+      const countryCode = data.address.country_code?.toUpperCase();
+      const flag = countryCode ? String.fromCodePoint(...[...countryCode].map(c => 0x1F1E6 - 65 + c.charCodeAt(0))) : '';
+      this.cityName.set(`${flag} ${city.name}`);
+    });
     this.fetchWeather(city.lat, city.lon);
   }
 
@@ -88,7 +92,6 @@ export class App implements OnInit {
       }
     );
   }
-
   fetchWeather(lat: number, lon: number): void {
     const processData = (data: any) => {
       if (!data) {
